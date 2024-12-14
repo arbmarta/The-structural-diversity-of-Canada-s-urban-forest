@@ -75,21 +75,22 @@ print(f"Tree counts exported to {output_file}")
 #region
 prop_columns = ["prop_less_than_20", "prop_20_to_40", "prop_40_to_60", "prop_greater_than_60"]
 custom_colors = ["#006d2c", "#31a354", "#74c476", "#bae4b3"]  # Replace with your preferred colors
+tree_counts_df_sorted = tree_counts_df.sort_values(by="prop_less_than_20", ascending=False)
 
-fig, ax = plt.subplots(figsize=(12, len(tree_counts_df) * 0.4))  # Adjust height dynamically for city count
+fig, ax = plt.subplots(figsize=(12, len(tree_counts_df_sorted) * 0.4))  # Adjust height dynamically for city count
 
-cities = tree_counts_df.index  # Cities on y-axis
+cities = tree_counts_df_sorted.index  # Cities on y-axis
 bottom = np.zeros(len(cities))  # Initialize the bottom for stacking
 
 for i, prop in enumerate(prop_columns):
     ax.barh(
         cities,
-        tree_counts_df[prop],
+        tree_counts_df_sorted[prop],
         left=bottom,
         color=custom_colors[i],
         label=prop.replace("prop_", "").replace("_", " ").capitalize(),
     )
-    bottom += tree_counts_df[prop]  # Update the bottom for the next bar
+    bottom += tree_counts_df_sorted[prop]  # Update the bottom for the next bar
 
 vertical_lines = [(40, 'red'), (70, 'red'), (90, 'red')]
 for x, color in vertical_lines:
